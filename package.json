@@ -1,0 +1,16 @@
+{
+  "name": "face-flash",
+  "version": "0.0.1",
+  "description": "Bolt-based Slack app for remembering faces and names",
+  "main": "index.js",
+  "repository": "https://github.com/tomfa/face-flash",
+  "author": "Tomas Fagerbekk <tomas.a.fagerbekk@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "^2.1.1",
+    "dotenv": "^8.2.0"
+  }
+}
