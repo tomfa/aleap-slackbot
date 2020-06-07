@@ -1,0 +1,19 @@
+{
+  "name": "Slack bot starter",
+  "description": "A starter for making a Slack bot",
+  "env": {
+    "SLACK_BOT_TOKEN": {
+      "description": "Found in Slack/New App/Oath and Permissions. Can be set later",
+      "value": "",
+      "required": false
+    },
+    "SLACK_SIGNING_SECRET": {
+      "description": "Found in Slack/New App/Basic Information. Can be set later",
+      "value": "",
+      "required": false
+    }
+  },
+  "repository": "https://github.com/tomfa/slack-app-starter",
+  "logo": "https://github.com/slackapi/bolt-js/raw/master/docs/assets/bolt-logo.svg?sanitize=true",
+  "keywords": ["node", "bolt", "slack", "bot"]
+}
