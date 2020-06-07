@@ -7,11 +7,13 @@
   "author": "Tomas Fagerbekk <tomas.a.fagerbekk@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "prettier": "prettier --single-quote --trailing-comma all --write ."
   },
   "dependencies": {
     "@slack/bolt": "^2.1.1",
     "dotenv": "^8.2.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "prettier": "^2.0.5"
   }
 }
