@@ -1,10 +1,11 @@
-const { getUser } = require("./data");
 const app = require("./app");
+
+const { getUser } = require("./data");
+const { getFaceQuiz } = require("./quiz");
 
 app.action(
   "guess_name_from_picture",
-  async (things) => {
-    const { ack, say, action } = things
+  async ({ ack, say, action }) => {
     await ack();
     const [correctAnswer, answer] = action.selected_option.value.split(';');
     const user = await getUser({ id: correctAnswer });
@@ -14,5 +15,7 @@ app.action(
     } else {
       await say(`Nope! :cry: ${text}`);
     }
+    const quiz = await getFaceQuiz({ exclude: [user.id] });
+    await say(quiz)
   }
 );
