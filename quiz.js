@@ -1,9 +1,13 @@
+const { NoRemainingUsers } = require("./errors");
 const { fetchUsers } = require("./data");
 const { findAsync, shuffle } = require( "./utils");
 
 const getFaceQuiz = async ({ exclude = [] }) => {
   const users = shuffle(await fetchUsers());
   const randomUser = await findAsync(users.filter(u => !exclude.includes(u.id)), async (u) => await u.hasImage() === true);
+  if (!randomUser) {
+    throw new NoRemainingUsers('There are no users left to quiz that has image :cry:');
+  }
   const correctAnswer = randomUser.id;
   return {
     blocks: [

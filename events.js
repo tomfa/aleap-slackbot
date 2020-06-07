@@ -1,5 +1,6 @@
-const app = require("./app");
 
+const app = require("./app");
+const { MessageError } = require("./errors");
 const { getUser } = require("./data");
 const { getFaceQuiz } = require("./quiz");
 
@@ -16,7 +17,15 @@ app.action(
     } else {
       await say(`Nope! :cry: ${text}`);
     }
-    const quiz = await getFaceQuiz({ exclude: [user.id, body.user.id] });
-    await say(quiz)
+    try {
+      const quiz = await getFaceQuiz({exclude: [user.id, body.user.id]});
+      await say(quiz)
+    } catch (error) {
+      if (error instanceof MessageError) {
+        await say(error.message)
+      } else {
+        throw error;
+      }
+    }
   }
 );
