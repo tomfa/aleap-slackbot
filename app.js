@@ -12,6 +12,25 @@ app.message('hello', async ({ message, say }) => {
   await say(`Hey there <@${message.user}>!`);
 });
 
+function saveUsers(users) {
+  users.forEach(console.log);
+}
+
+async function fetchUsers() {
+  try {
+    const result = await app.client.users.list({
+      token: process.env.SLACK_BOT_TOKEN
+    });
+
+    saveUsers(result.members);
+    return result.member;
+  }
+  catch (error) {
+    console.error(error);
+    return []
+  }
+}
+
 app.message('help', async ({ message, say }) => {
   // say() sends a message to the channel where the event was triggered
   await say({
