@@ -1,7 +1,7 @@
-require('dotenv').config();
-const app = require('./app');
-require('./events');
-require('./messages');
+require("dotenv").config();
+const app = require("./app");
+require("./events");
+require("./commands");
 
 (async () => {
   await app.start(process.env.PORT);
