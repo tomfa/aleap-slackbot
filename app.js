@@ -12,18 +12,17 @@ app.message('hello', async ({ message, say }) => {
   await say(`Hey there <@${message.user}>!`);
 });
 
-function saveUsers(users) {
-  users.forEach(console.log);
-}
-
 async function fetchUsers() {
   try {
     const result = await app.client.users.list({
       token: process.env.SLACK_BOT_TOKEN
     });
+    const users = result.members
+      .filter(m => !m.deleted)
+      .filter(m => !m.is_bot)
+      .filter(m => m.name !== 'slackbot');
 
-    saveUsers(result.members);
-    return result.member;
+    return users;
   }
   catch (error) {
     console.error(error);
