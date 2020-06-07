@@ -4,8 +4,7 @@ const app = require("./app");
 app.action(
   "guess_name_from_picture",
   async (things) => {
-    const { body, ack, say, action, payload } = things
-    // Acknowledge the action
+    const { ack, say, action } = things
     await ack();
     const [correctAnswer, answer] = action.selected_option.value.split(';');
     const user = await getUser({ id: correctAnswer });

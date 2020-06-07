@@ -1,15 +1,16 @@
-const { fetchUsers } = require("./data");
 const app = require("./app");
+const { fetchUsers } = require("./data");
+const { findAsync, shuffle } = require( "./utils");
 
 app.message("facequiz", async ({ message, say }) => {
-  const users = await fetchUsers();
-  const randomUser = users[Math.floor(Math.random() * users.length)];
+  const users = shuffle(await fetchUsers());
+  const randomUser = await findAsync(users, async (u) => await u.hasImage() === true);
   const correctAnswer = randomUser.id;
   await say({
     blocks: [
       {
         type: "image",
-        image_url: randomUser.profile.image_512,
+        image_url: randomUser.profile.image_original || randomUser.profile.image_192,
         alt_text: "Who is this?",
       },
       {
