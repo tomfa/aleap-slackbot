@@ -1,10 +1,10 @@
-const app = require("./app");
-const fetch = require("node-fetch");
+const app = require('./app');
+const fetch = require('node-fetch');
 
 let userData = undefined;
 
 async function isRedirected(url) {
-  const data = await fetch(url, { method: "HEAD" });
+  const data = await fetch(url, { method: 'HEAD' });
   return data.redirected;
 }
 
@@ -16,7 +16,7 @@ async function hasImage(user) {
   return !(await isRedirected(gravatarUrl));
 }
 
-const hasImageLazy = (user, key = "hasImage") => async () => {
+const hasImageLazy = (user, key = 'hasImage') => async () => {
   const value = await hasImage(user);
   user[key] = async () => value;
   return value;
@@ -33,9 +33,9 @@ async function fetchUsers({ refresh = false } = {}) {
     userData = result.members
       .filter((m) => !m.deleted)
       .filter((m) => !m.is_bot)
-      .filter((m) => m.name !== "slackbot")
+      .filter((m) => m.name !== 'slackbot')
       .map((u) => {
-        u.hasImage = hasImageLazy(u, "hasImage");
+        u.hasImage = hasImageLazy(u, 'hasImage');
         return u;
       });
 

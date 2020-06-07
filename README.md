@@ -2,8 +2,6 @@
 
 Flashcards for remembering faces and names in Slack. A bot built on [Bolt](https://github.com/slackapi/bolt-js).
 
-
-
 ## Develop
 
 ### Requirements
@@ -12,7 +10,7 @@ Flashcards for remembering faces and names in Slack. A bot built on [Bolt](https
 
 ### Setup
 
-#### Set up ngrok 
+#### Set up ngrok
 
 [Ngrok](https://dashboard.ngrok.com/get-started/setup) is used to have a public url tunnel to your localhost.
 
@@ -52,10 +50,6 @@ Edit the keys to match the Slack App you've created.
 yarn start
 ```
 
-
 ### Set up Slack app
 
-Go through the [Bolt tutorial](https://slack.dev/bolt-js/tutorial/getting-started). Remember that the "*local project*" is this repository. 
-
-
-
+Go through the [Bolt tutorial](https://slack.dev/bolt-js/tutorial/getting-started). Remember that the "_local project_" is this repository.

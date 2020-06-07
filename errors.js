@@ -4,5 +4,6 @@ class MessageError extends Error {
 class NoRemainingUsers extends MessageError {}
 
 module.exports = {
-  NoRemainingUsers, MessageError
-}
+  NoRemainingUsers,
+  MessageError,
+};

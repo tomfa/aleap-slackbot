@@ -4,20 +4,22 @@ module.exports.shuffle = function (a) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
-}
+};
 
-
-module.exports.findAsync = async function(arr, asyncCallback, syncExecution = true) {
+module.exports.findAsync = async function (
+  arr,
+  asyncCallback,
+  syncExecution = true,
+) {
   if (syncExecution) {
     for (element of arr) {
       const result = await asyncCallback(element);
-      if (result)
-        return element
+      if (result) return element;
     }
   } else {
-      const promises = arr.map(asyncCallback);
-      const results = await Promise.all(promises);
-      const index = results.findIndex(result => result);
-      return arr[index];
-    }
-}
+    const promises = arr.map(asyncCallback);
+    const results = await Promise.all(promises);
+    const index = results.findIndex((result) => result);
+    return arr[index];
+  }
+};
