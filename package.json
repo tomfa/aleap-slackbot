@@ -7,7 +7,7 @@
   "author": "Tomas Fagerbekk <tomas.a.fagerbekk@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "@slack/bolt": "^2.1.1",
