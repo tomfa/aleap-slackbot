@@ -36,7 +36,8 @@ Follow these steps to set up this bot on your Slack
    send chat messages:
 
    - Go to _OAuth and Permissions_ in the left menu
-   - Add scope `users:read` and `chat:write`
+   - Required scopes `commands`, `users:read` and `chat:write`.
+   - Consider scopes `app_mentions:read`, `im:read`, `im:write`, `mpim:read`, `mpim:write`, `chat:write.public`, `links:write`, `incoming-webhook` (simplifies life and allows you to do basic interaction/conversation)
 
    For our bot to be able to respond to interactive messages, we must enable
    interactivity:
@@ -49,7 +50,14 @@ Follow these steps to set up this bot on your Slack
    variables on the server we set up in step 1:
 
    - `SLACK_SIGNING_SECRET`: Found in _Basic Information_ -> _Signing Secret_
-   - `SLACK_BOT_TOKEN`: Found in _Oath and Permissions_ -> _Bot User OAuth Access Token_
+   - `SLACK_BOT_TOKEN`: Found in _Oauth and Permissions_ -> _Bot User OAuth Access Token_
+
+   For our HTTP webhook receiver, we also want to set the following
+   environment variables:
+
+   - `WEBHOOK_TOKEN`: Any string that will work as a token for calling our endpoint.
+   - `SLACK_WEBHOOK_CHANNEL`: The channel (or user) to receive data from webhooks,
+     e.g. `#random` or `@myhandle`.
 
 ## Develop
 

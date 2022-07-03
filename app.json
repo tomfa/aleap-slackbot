@@ -3,13 +3,23 @@
   "description": "A starter for making a Slack bot",
   "env": {
     "SLACK_BOT_TOKEN": {
-      "description": "Found in Slack/New App/Oath and Permissions. Can be set later",
+      "description": "Found in Slack/New App/Oauth and Permissions. Can be set later",
       "value": "",
       "required": false
     },
     "SLACK_SIGNING_SECRET": {
       "description": "Found in Slack/New App/Basic Information. Can be set later",
       "value": "",
+      "required": false
+    },
+    "SLACK_WEBHOOK_CHANNEL": {
+      "description": "Channel to report incoming webhook data to. Can be set later.",
+      "value": "#random",
+      "required": false
+    },
+    "WEBHOOK_TOKEN": {
+      "description": "A random secret token you create, for other services to communicate to Slack via your bot. Can be set later.",
+      "value": "a-secret",
       "required": false
     }
   },

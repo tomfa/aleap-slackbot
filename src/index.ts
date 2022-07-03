@@ -1,17 +1,28 @@
-import { addEvents } from "./events";
-
 require("dotenv").config();
 
-import { addSlashCommands } from "./commands";
 import { createApp } from "./app";
+import { addEvents } from "./events";
+import { addSlashCommands } from "./commands";
+import { createHandler, addHttpHandlers } from "./http";
+
+const receiver = createHandler({
+  signingSecret: process.env.SLACK_SIGNING_SECRET!,
+});
 
 const app = createApp({
-  slackBotToken: process.env.SLACK_BOT_TOKEN as string,
-  slackSigningSecret: process.env.SLACK_SIGNING_SECRET as string,
+  slackBotToken: process.env.SLACK_BOT_TOKEN!,
+  slackSigningSecret: process.env.SLACK_SIGNING_SECRET!,
+  receiver,
 });
 
 addSlashCommands(app);
 addEvents(app);
+addHttpHandlers({
+  app,
+  receiver,
+  allowedTokens: [process.env.WEBHOOK_TOKEN!],
+  dmChannel: process.env.SLACK_WEBHOOK_CHANNEL || "#random",
+});
 
 (async () => {
   await app.start(process.env.PORT as string);
