@@ -4,7 +4,7 @@ A starter for creating your own Slack bot using [Bolt](https://github.com/slacka
 
 > With an example face quiz slash command.
 
-![/facequiz](./docs/slash-quiz.png)
+![/facequiz](./slash-quiz.png)
 
 **Related links**
 
