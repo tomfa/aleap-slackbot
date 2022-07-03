@@ -2,12 +2,14 @@
   "name": "slackbot-starter",
   "version": "0.0.1",
   "description": "A starter for creating Slack bots",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/tomfa/slackbot-starter",
   "author": "Tomas Fagerbekk <tomas.a.fagerbekk@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.js",
+    "build": "tsc -p .",
+    "build:watch": "tsc -w -p .",
+    "start": "npm run build && node dist/index.js",
     "prettier": "prettier --single-quote --trailing-comma all --write ."
   },
   "husky": {
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "husky": "^4.2.5",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "typescript": "^4.7.4"
   }
 }
