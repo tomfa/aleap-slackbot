@@ -1,3 +1,5 @@
+import { Member } from "@slack/web-api/dist/response/UsersListResponse";
+
 require("dotenv").config();
 import { App, Block, KnownBlock } from "@slack/bolt";
 
@@ -16,14 +18,6 @@ export class ChatBot extends App {
   }
 }
 
-// TODO: Depend on @slack/bolt types
-export type Profile = { image_192: string; image_original?: string };
-export type User = {
-  id: string;
-  deleted: boolean;
-  is_bot: boolean;
-  name: string;
-  real_name: string;
-  profile: Profile;
-  hasImage: () => Promise<boolean>;
-};
+export type User = Member & { hasImage: () => Promise<boolean> } & Required<
+    Pick<Member, "profile" | "id">
+  >;

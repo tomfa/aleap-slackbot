@@ -1,6 +1,6 @@
 import { NoRemainingUsers } from "./errors";
 import { findAsync, shuffle } from "./utils";
-import { Block, KnownBlock } from "@slack/bolt";
+import { Block, KnownBlock, PlainTextOption } from "@slack/bolt";
 import { User } from "./types";
 
 export const getFaceQuiz = async ({
@@ -47,14 +47,20 @@ export const getFaceQuiz = async ({
               text: "Select an item",
               emoji: true,
             },
-            options: users.map((c) => ({
-              text: {
-                type: "plain_text",
-                text: c.real_name,
-                emoji: true,
-              },
-              value: `${correctAnswer};${c.id}`,
-            })),
+            options: users.map(
+              (c): PlainTextOption => ({
+                text: {
+                  type: "plain_text",
+                  text:
+                    c.real_name ||
+                    c.profile.real_name ||
+                    c.name ||
+                    c.profile.first_name!,
+                  emoji: true,
+                },
+                value: `${correctAnswer};${c.id}`,
+              })
+            ),
           },
         ],
       },

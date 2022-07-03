@@ -14,6 +14,6 @@ addSlashCommands(app);
 addEvents(app);
 
 (async () => {
-  await app.start(process.env.PORT);
+  await app.start(process.env.PORT as string);
   console.log(`⚡️ Bolt app is listening at localhost:${process.env.PORT}`);
 })();

@@ -10,11 +10,11 @@ async function isRedirected(url: string) {
 }
 
 async function hasImage(user: User) {
-  if (user.profile.image_original) {
+  if (user.profile?.image_original) {
     return true;
   }
-  const gravatarUrl = user.profile.image_192;
-  return !(await isRedirected(gravatarUrl));
+  const gravatarUrl = user.profile?.image_192;
+  return !!gravatarUrl && !(await isRedirected(gravatarUrl));
 }
 
 const hasImageLazy = (user: User) => async () => {
@@ -37,18 +37,24 @@ export async function fetchUsers({
     return userData;
   }
   try {
-    const result = (await app.client.users.list({
+    const result = await app.client.users.list({
       token: process.env.SLACK_BOT_TOKEN,
-    })) as unknown as { members: Array<User> };
-    console.log("result", result);
+    });
+    if (!result.members) {
+      console.error(`Unable to list users`);
+      return [];
+    }
     userData = result.members
-      .filter((m) => !m.deleted)
-      .filter((m) => !m.is_bot)
+      .filter((m) => !m.deleted && !m.is_bot && !!m.profile && !!m.id)
       .filter((m) => m.name !== "slackbot")
-      .map((u) => {
-        u.hasImage = hasImageLazy(u);
-        return u;
-      });
+      .map(
+        (m): User => ({
+          ...m,
+          id: m.id!,
+          profile: m.profile!,
+          hasImage: hasImageLazy(m as User),
+        })
+      );
 
     return userData;
   } catch (error) {
