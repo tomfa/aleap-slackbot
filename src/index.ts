@@ -21,7 +21,7 @@ addHttpHandlers({
   app,
   receiver,
   allowedTokens: [process.env.WEBHOOK_TOKEN!],
-  dmChannel: "#random",
+  dmChannel: process.env.SLACK_WEBHOOK_CHANNEL || "#random",
 });
 
 (async () => {
