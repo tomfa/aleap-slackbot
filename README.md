@@ -66,7 +66,7 @@ further.
 
 ### Run bot locally
 
-Slack needs a public URL to communicate with yout bot.
+Slack needs a public URL to communicate with your bot.
 If you have set up a server running the bot, you _can_ skip this
 section, and test directly by pushing the code to your server.
 
