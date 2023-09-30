@@ -7,16 +7,28 @@ import { getUsers } from '../../bot/utils/users';
 import { postToChannel } from '../../bot/utils/postToChannel';
 import { SayArguments } from '@slack/bolt';
 
+type FaceQuizPayload = {
+  token: string;
+  team_id: string;
+  team_domain: string;
+  channel_id: string;
+  channel_name: string;
+  user_id: string;
+  user_name: string;
+  command: string;
+  text: string;
+  api_app_id: string;
+  is_enterprise_install: string;
+  response_url: string;
+  trigger_id: string;
+};
+
 export default async function facequiz(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const commandArray = tokenizeString(req.body.text);
-  console.log('commandArray', JSON.stringify(commandArray));
-  const data = await req.body.event;
-  console.log('req.body', JSON.stringify(req.body));
-  // TODO: Validate/typescheck
-  const user: { id: string; username: string } = data.user.id;
+  const data = (await req.body) as FaceQuizPayload;
+  const user = { id: data.user_id, username: data.user_name };
 
   const say = async (payload: SayArguments | string) =>
     postToChannel({ channel: user.username, payload });
