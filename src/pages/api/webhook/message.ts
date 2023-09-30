@@ -7,10 +7,7 @@ import { assertTokenAuth } from '../../../bot/utils/assertTokenAuth';
 import { parseMessageEvent } from '../../../bot/message/parser';
 import { messageBlocks } from '../../../bot/message/blocks';
 
-export default async function customWebhook(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   console.log(`POST /webhook/message received:`);
   console.log(JSON.stringify(req.body, undefined, 2));
   assertTokenAuth(req);
