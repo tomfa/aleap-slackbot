@@ -21,7 +21,6 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       ? '#861818'
       : '#2a2aa8';
   await postToChannel({
-    res,
     channel: msg.channel || defaultChannel,
     payload: {
       metadata: undefined,

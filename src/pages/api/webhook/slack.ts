@@ -15,7 +15,6 @@ export default async function slackWebhook(
   const sentryEvent = parseSentryEvent(req.body);
   await postToChannel({
     channel: defaultChannel,
-    res,
     payload: slackBlocks(sentryEvent),
   });
   res.send(`Super`);

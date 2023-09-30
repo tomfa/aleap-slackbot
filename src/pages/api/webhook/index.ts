@@ -13,7 +13,6 @@ export default async function webhook(
   console.log(JSON.stringify(req.body, undefined, 2));
   await postToChannel({
     channel: defaultChannel,
-    res,
     payload: `/webhook got a POST request with data of length ${dataLength}`,
   });
   res.send(`Super`);

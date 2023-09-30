@@ -19,7 +19,7 @@ export async function guessNameFromPicture(
   console.log('req body challenge is:', req.body.challenge);
   const action = event.actions[0]!;
   const say = async (payload: SayArguments | string) =>
-    postToChannel({ channel: event.user.username, res, payload });
+    postToChannel({ channel: event.user.username, payload });
 
   ack(res);
   const [correctAnswer, answer] = action.selected_option.value.split(';');

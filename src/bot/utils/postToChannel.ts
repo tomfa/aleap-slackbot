@@ -9,11 +9,9 @@ import { channelNameToId } from './channels';
 import { token } from '../constants';
 
 export async function postToChannel({
-  res,
   channel,
   payload,
 }: {
-  res: NextApiResponse;
   channel: string; // e.g. @username or #channelname
   payload: SayArguments | string;
 }) {
@@ -46,12 +44,7 @@ export async function postToChannel({
     const data = await response.json();
 
     console.log('data from fetch:', data);
-    res.json({ ok: true });
   } catch (err) {
     console.log('fetch Error:', err);
-    res.send({
-      response_type: 'ephemeral',
-      text: `${err}`,
-    });
   }
 }

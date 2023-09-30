@@ -10,7 +10,6 @@ export default async function secretPage(
   assertTokenAuth(req);
   await postToChannel({
     channel: defaultChannel,
-    res,
     payload: '/secret-page got a get request',
   });
   res.send(`Super`);
