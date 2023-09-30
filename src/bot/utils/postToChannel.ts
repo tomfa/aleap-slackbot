@@ -1,0 +1,45 @@
+import { NextApiResponse } from 'next';
+import { SayArguments } from '@slack/bolt';
+import { channelNameToId } from './channels';
+import { token } from '../constants';
+
+export async function postToChannel(
+  channel: string,
+  res: NextApiResponse,
+  payload: SayArguments | string,
+) {
+  const channelId = await channelNameToId(channel);
+
+  const message =
+    typeof payload === 'string'
+      ? {
+          channel: channelId,
+          text: payload,
+        }
+      : {
+          channel: channelId,
+          blocks: payload.blocks,
+        };
+
+  try {
+    const url = 'https://slack.com/api/chat.postMessage';
+    const response = await fetch(url, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(message),
+    });
+    const data = await response.json();
+
+    console.log('data from fetch:', data);
+    res.json({ ok: true });
+  } catch (err) {
+    console.log('fetch Error:', err);
+    res.send({
+      response_type: 'ephemeral',
+      text: `${err}`,
+    });
+  }
+}
