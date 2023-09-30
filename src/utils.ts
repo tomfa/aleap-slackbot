@@ -9,7 +9,7 @@ export function shuffle<T = any>(a: T[]): T[] {
 export async function findAsync<T>(
   arr: T[],
   asyncCallback: (v: T) => Promise<any>,
-  syncExecution = true
+  syncExecution = true,
 ) {
   if (syncExecution) {
     for (const element of arr) {

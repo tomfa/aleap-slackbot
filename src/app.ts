@@ -1,8 +1,8 @@
-import { Receiver } from "@slack/bolt";
+import { Receiver } from '@slack/bolt';
 
-require("dotenv").config();
+require('dotenv').config();
 
-import { ChatBot } from "./types";
+import { ChatBot } from './types';
 
 export const createApp = (config: {
   slackBotToken: string;

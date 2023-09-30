@@ -1,9 +1,9 @@
-import { AckFn, RespondArguments, SayFn, SlashCommand } from "@slack/bolt";
+import { AckFn, RespondArguments, SayFn, SlashCommand } from '@slack/bolt';
 
-import { MessageError } from "./errors";
-import { ChatBot } from "./types";
-import { getFaceQuiz } from "./quiz";
-import { fetchUsers } from "./data";
+import { MessageError } from './errors';
+import { ChatBot } from './types';
+import { getFaceQuiz } from './quiz';
+import { fetchUsers } from './data';
 
 const getFaceQuizCommand =
   (app: ChatBot) =>
@@ -37,5 +37,5 @@ const getFaceQuizCommand =
   };
 
 export const addSlashCommands = (app: ChatBot) => {
-  app.command("/facequiz", getFaceQuizCommand(app));
+  app.command('/facequiz', getFaceQuizCommand(app));
 };

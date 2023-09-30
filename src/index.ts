@@ -1,9 +1,9 @@
-require("dotenv").config();
+require('dotenv').config();
 
-import { createApp } from "./app";
-import { addEvents } from "./events";
-import { addSlashCommands } from "./commands";
-import { createHandler, addHttpHandlers } from "./http";
+import { createApp } from './app';
+import { addEvents } from './events';
+import { addSlashCommands } from './commands';
+import { createHandler, addHttpHandlers } from './http';
 
 const receiver = createHandler({
   signingSecret: process.env.SLACK_SIGNING_SECRET!,
@@ -21,7 +21,7 @@ addHttpHandlers({
   app,
   receiver,
   allowedTokens: [process.env.WEBHOOK_TOKEN!],
-  dmChannel: process.env.SLACK_WEBHOOK_CHANNEL || "#random",
+  dmChannel: process.env.SLACK_WEBHOOK_CHANNEL || '#random',
 });
 
 (async () => {

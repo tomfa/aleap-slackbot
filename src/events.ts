@@ -1,18 +1,18 @@
-import { ChatBot } from "./types";
+import { ChatBot } from './types';
 
 const { MessageError } = require("./errors");
 const { getUser } = require("./data");
 const { getFaceQuiz } = require("./quiz");
 
 const addNameGuessEventHandler = (app: ChatBot) => {
-  app.action("guess_name_from_picture", async ({ ack, say, action, body }) => {
+  app.action('guess_name_from_picture', async ({ ack, say, action, body }) => {
     await ack();
 
     // @ts-ignore
-    const [correctAnswer, answer] = action.selected_option.value.split(";");
+    const [correctAnswer, answer] = action.selected_option.value.split(';');
     const user = await getUser({ id: correctAnswer });
     const { real_name, name, profile } = user;
-    const title = profile.title ? ` *${profile.title}*` : "";
+    const title = profile.title ? ` *${profile.title}*` : '';
     const text = `That was ${real_name} (<@${name}>).${title}`;
     if (correctAnswer === answer) {
       await say(`Correct! :cake: ${text}`);
