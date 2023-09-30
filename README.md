@@ -36,7 +36,7 @@ Follow these steps to set up this bot on your Slack
    send chat messages:
 
    - Go to _OAuth and Permissions_ in the left menu
-   - Required scopes `commands`, `users:read` and `chat:write`.
+   - Required scopes `commands`, `users:read`, `channels:read` and `chat:write`.
    - Consider scopes `app_mentions:read`, `im:read`, `im:write`, `mpim:read`, `mpim:write`, `chat:write.public`, `links:write`, `incoming-webhook` (simplifies life and allows you to do basic interaction/conversation)
 
    For our bot to be able to respond to interactive messages, we must enable
