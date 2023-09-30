@@ -3,8 +3,12 @@ import { allowedTokens } from '../constants';
 
 export function assertTokenAuth(req: NextApiRequest) {
   const token = req.query.token as string;
-  const hasAccess = token && allowedTokens.includes(token);
-  if (!hasAccess) {
-    throw new Error(`Attempted accessing http handler without valid token`);
+  if (allowedTokens.includes(token)) {
+    return;
   }
+  const httpAuth = req.headers.authorization?.split(' ')[1];
+  if (httpAuth && allowedTokens.includes(httpAuth)) {
+    return;
+  }
+  throw new Error(`Attempted accessing http handler without valid token`);
 }
