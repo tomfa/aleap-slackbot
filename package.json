@@ -13,6 +13,11 @@
     "prettier": "prettier --single-quote --trailing-comma all --write .",
     "prepare": "husky install"
   },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,css}": [
+      "prettier --write"
+    ]
+  },
   "dependencies": {
     "@slack/bolt": "^3.14.0",
     "dotenv": "^16.3.1",
@@ -24,7 +29,7 @@
     "@types/node": "^20.8.0",
     "@types/node-fetch": "^2.6.6",
     "concurrently": "^8.2.1",
-    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
     "pretty-quick": "^3.1.3"

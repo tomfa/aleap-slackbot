@@ -1,0 +1,9 @@
+repos:
+  # TS Linting
+  - repo: local
+    hooks:
+      - id: lint-staged
+        name: Linters
+        language: system
+        entry: sh -c 'yarn exec lint-staged -q'
+        pass_filenames: false
