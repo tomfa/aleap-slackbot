@@ -12,7 +12,7 @@ A starter for creating your own Slack bot using NextJS API.
 - [Slack: Create an App](http://api.slack.com/apps)
 - [Slack: Block Kit builder](https://app.slack.com/block-kit-builder/)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23events&env=SLACK_BOT_TOKEN,SLACK_SIGNING_SECRET,WEBHOOK_TOKEN,SLACK_WEBHOOK_CHANNEL&envDescription=Keys%20needed%20for%20authenticating%20requests%2C%20and%20connecting%20with%20Slack&envLink=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23events&project-name=slackbot&repository-name=slackbot&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23Environment&env=SLACK_BOT_TOKEN,SLACK_SIGNING_SECRET,WEBHOOK_TOKEN,SLACK_WEBHOOK_CHANNEL&envDescription=Keys%20needed%20for%20authenticating%20requests%2C%20and%20connecting%20with%20Slack&envLink=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23environment&project-name=slackbot&repository-name=slackbot&skippable-integrations=1)
 
 ## Adding to Slack
 
@@ -46,7 +46,7 @@ Follow these steps to set up this bot on your Slack
    - For the request url, we use the same as previously, e.g.
      `https://example.vercel.app/events`
 
-### Events
+### Environment
 
    We need Slack auth keys to be added. We do this by setting environment
    variables on the server we set up in step 1:
