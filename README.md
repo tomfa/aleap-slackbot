@@ -1,6 +1,6 @@
-# Slack-bot starter
+# NextJS Slack-bot starter
 
-A starter for creating your own Slack bot using [Bolt](https://github.com/slackapi/bolt-js).
+A starter for creating your own Slack bot using NextJS API.
 
 > With an example face quiz slash command.
 
@@ -8,18 +8,18 @@ A starter for creating your own Slack bot using [Bolt](https://github.com/slacka
 
 **Related links**
 
-- [Slack: BoltJS Getting started](https://slack.dev/bolt-js/)
+- [Slack: Web API methods](https://api.slack.com/methods/)
 - [Slack: Create an App](http://api.slack.com/apps)
 - [Slack: Block Kit builder](https://app.slack.com/block-kit-builder/)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23events&env=SLACK_BOT_TOKEN,SLACK_SIGNING_SECRET,WEBHOOK_TOKEN,SLACK_WEBHOOK_CHANNEL&envDescription=Keys%20needed%20for%20authenticating%20requests%2C%20and%20connecting%20with%20Slack&envLink=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23events&project-name=slackbot&repository-name=slackbot&skippable-integrations=1)
 
 ## Adding to Slack
 
 Follow these steps to set up this bot on your Slack
 
 1. Deploy this repository to a server.
-   Note down the public URL, e.g. `example.herokuapp.com`
+   Note down the public URL, e.g. `example.vercel.app`
 
 2. Go to [api.slack.com/apps](https://api.slack.com/apps?new_app=1), and create a new App.
 
@@ -28,8 +28,8 @@ Follow these steps to set up this bot on your Slack
 
    - **Go to Slash Commands** and create a new command.
    - The command must match our code, so enter `/facequiz` here
-   - For the URL, enter your domain, followed by `/slack/events`.
-     _E.g.`https://example.herokuapp.com/slack/events`_
+   - For the URL, enter your domain, followed by `/events`.
+     _E.g.`https://example.vercel.app/events`_
    - Add some description and save.
 
    We'll need permissions to find users and their avatars, as well as
@@ -44,7 +44,9 @@ Follow these steps to set up this bot on your Slack
 
    - Go to _Interactivity and Shortcuts_, and enable it.
    - For the request url, we use the same as previously, e.g.
-     `https://example.herokuapp.com/slack/events`
+     `https://example.vercel.app/events`
+
+### Events
 
    We need Slack auth keys to be added. We do this by setting environment
    variables on the server we set up in step 1:
@@ -96,7 +98,7 @@ ngrok http 3000
 
 #### Change Slack configuration
 
-The public url in front of your localhost will have to used instead of `https://example.herokuapp.com`
+The public url in front of your localhost will have to used instead of `https://example.vercel.app`
 in the Slack bot configuration – See [Adding to Slack](#adding-to-slack) above and change to your ngrok url.
 
 #### Set up auth locally
