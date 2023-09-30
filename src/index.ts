@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-import { createApp } from './app';
-import { addEvents } from './events';
-import { addSlashCommands } from './commands';
-import { createHandler, addHttpHandlers } from './http';
+import { createApp } from './bot/app';
+import { addEvents } from './bot/events';
+import { addSlashCommands } from './bot/commands';
+import { createHandler, addHttpHandlers } from './bot/http';
 
 const receiver = createHandler({
   signingSecret: process.env.SLACK_SIGNING_SECRET!,
