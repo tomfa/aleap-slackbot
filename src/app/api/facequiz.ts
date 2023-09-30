@@ -19,7 +19,7 @@ export default async function facequiz(
   const user: { id: string; username: string } = data.user.id;
 
   const say = async (payload: SayArguments | string) =>
-    postToChannel(user.username, res, payload);
+    postToChannel({ res, channel: user.username, payload });
 
   try {
     ack(res);

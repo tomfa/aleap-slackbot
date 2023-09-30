@@ -1,5 +1,6 @@
 import { token } from '../constants';
 import { ChannelCreatedEvent } from '@slack/bolt/dist/types/events/base-events';
+import { getUsers } from './users';
 
 type ConversationsListResponse = {
   ok: boolean;
@@ -28,16 +29,21 @@ export async function getChannels() {
 }
 
 export async function channelNameToId(channelName: string) {
-  const channels = await getChannels();
-  const channel = channels.find((c) => c.name === channelName);
-  if (channel) {
-    return channel.id;
+  if (channelName.startsWith('#')) {
+    const channels = await getChannels();
+    const channel = channels.find((c) => c.name === channelName);
+    if (channel) {
+      return channel.id;
+    }
+    console.error(`Unable to find channel with name ${channelName}`);
   }
-  console.error(`Unable to find channel with name ${channelName}`);
-  const generalChannel = channels.find((c) => c.name === 'general');
-  if (generalChannel) {
-    return generalChannel.id;
+  if (channelName.startsWith('@')) {
+    const users = await getUsers();
+    const user = users.find((u) => u.name === channelName);
+    if (user) {
+      return user.id;
+    }
+    console.error(`Unable to find user with name ${channelName}`);
   }
-  console.error(`Unable to find channel with name general`);
-  return undefined;
+  return channelName;
 }

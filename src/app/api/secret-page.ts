@@ -12,6 +12,10 @@ export default async function secretPage(
     console.log(`Attempted accessing http handler without valid token`);
     return res.send('OK');
   }
-  await postToChannel(defaultChannel, res, '/secret-page got a get request');
+  await postToChannel({
+    channel: defaultChannel,
+    res,
+    payload: '/secret-page got a get request',
+  });
   res.send(`Super`);
 }

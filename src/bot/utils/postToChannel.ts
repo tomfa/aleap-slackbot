@@ -1,13 +1,22 @@
 import { NextApiResponse } from 'next';
-import { SayArguments } from '@slack/bolt';
+import {
+  Block,
+  KnownBlock,
+  MessageAttachment,
+  SayArguments,
+} from '@slack/bolt';
 import { channelNameToId } from './channels';
 import { token } from '../constants';
 
-export async function postToChannel(
-  channel: string,
-  res: NextApiResponse,
-  payload: SayArguments | string,
-) {
+export async function postToChannel({
+  res,
+  channel,
+  payload,
+}: {
+  res: NextApiResponse;
+  channel: string; // e.g. @username or #channelname
+  payload: SayArguments | string;
+}) {
   const channelId = await channelNameToId(channel);
 
   const message =
