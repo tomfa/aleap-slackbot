@@ -21,10 +21,6 @@ export async function getChannels() {
       },
     });
     const data: ConversationsListResponse = await response.json();
-    console.log(
-      'https://slack.com/api/conversations.list',
-      JSON.stringify(data, null, 2),
-    );
     return data.channels;
   } catch (err) {
     console.log('fetch Error:', err);
