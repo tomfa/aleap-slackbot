@@ -18,6 +18,9 @@ export async function postToChannel({
   payload: SayArguments | string;
 }) {
   const channelId = await channelNameToId(channel);
+  if (!channelId) {
+    return;
+  }
 
   const message =
     typeof payload === 'string'
