@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import { ChatBot, User } from "./types";
 
 let userData: User[] = [];
+let lastUpdated: number | undefined;
 
 async function isRedirected(url: string) {
   const data = await fetch(url, { method: "HEAD" });
@@ -28,12 +29,18 @@ const hasImageLazy = (user: User) => async () => {
 
 export async function fetchUsers({
   app,
-  refresh = false,
+  useCache = true,
 }: {
   app: ChatBot;
-  refresh?: false;
+  useCache?: boolean;
 }): Promise<User[]> {
-  if (userData && !refresh) {
+  const yesterday = new Date(Date.now() - 24 * 7 * 60 * 60 * 1000).getTime();
+  if (
+    useCache &&
+    lastUpdated &&
+    lastUpdated > yesterday &&
+    userData?.length > 0
+  ) {
     return userData;
   }
   try {
@@ -55,8 +62,8 @@ export async function fetchUsers({
           hasImage: hasImageLazy(m as User),
         })
       );
-
-    return userData;
+    lastUpdated = Date.now();
+    return userData.slice();
   } catch (error) {
     console.error(error);
     return [];
