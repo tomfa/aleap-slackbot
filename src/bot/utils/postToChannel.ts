@@ -1,10 +1,4 @@
-import { NextApiResponse } from 'next';
-import {
-  Block,
-  KnownBlock,
-  MessageAttachment,
-  SayArguments,
-} from '@slack/bolt';
+import { MessageAttachment, SayArguments } from '@slack/bolt';
 import { channelNameToId } from './channels';
 import { token } from '../constants';
 
@@ -28,7 +22,8 @@ export async function postToChannel({
         }
       : {
           channel: channelId,
-          blocks: payload.blocks,
+          text: '',
+          ...payload,
         };
 
   try {
