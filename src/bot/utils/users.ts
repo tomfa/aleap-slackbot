@@ -35,6 +35,10 @@ export async function getUsers({
       },
     });
     const data: UsersListResponse = await response.json();
+    console.log(
+      'https://slack.com/api/users.list',
+      JSON.stringify(data, null, 2),
+    );
     userData = data.members
       .filter((m) => !m.deleted && !m.is_bot && !!m.profile && !!m.id)
       .filter((m) => m.name !== 'slackbot')

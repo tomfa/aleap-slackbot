@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { allowedTokens, defaultChannel } from '../../../bot/constants';
+import { defaultChannel } from '../../../bot/constants';
 import { postToChannel } from '../../../bot/utils/postToChannel';
-import { parseSentryEvent } from '../../../bot/sentry/parser';
-import { slackBlocks } from '../../../bot/sentry/blocks';
 import { assertTokenAuth } from '../../../bot/utils/assertTokenAuth';
 import { parseMessageEvent } from '../../../bot/message/parser';
 import { messageBlocks } from '../../../bot/message/blocks';
