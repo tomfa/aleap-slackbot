@@ -4,7 +4,7 @@ import { getFaceQuiz } from '../../bot/quiz';
 import { MessageError } from '../../bot/errors';
 import { ack } from '../../bot/utils/ack';
 import { getUsers } from '../../bot/utils/users';
-import { postToChannel } from '../../bot/utils/postToChannel';
+import { postToChannel, respond } from '../../bot/utils/postToChannel';
 import { SayArguments } from '@slack/bolt';
 
 type FaceQuizPayload = {
@@ -31,7 +31,7 @@ export default async function facequiz(
   const user = { id: data.user_id, username: data.user_name };
 
   const say = async (payload: SayArguments | string) =>
-    postToChannel({ channel: user.username, payload });
+    respond({ responseUrl: data.response_url, payload });
 
   try {
     ack(res);

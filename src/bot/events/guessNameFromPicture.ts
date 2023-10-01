@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { BlockAction, SayArguments, StaticSelectAction } from '@slack/bolt';
 import { ack } from '../utils/ack';
 import { getUser, getUsers } from '../utils/users';
-import { postToChannel } from '../utils/postToChannel';
+import { postToChannel, respond } from '../utils/postToChannel';
 import { getFaceQuiz } from '../quiz';
 import { MessageError } from '../errors';
 
@@ -19,7 +19,7 @@ export async function guessNameFromPicture(
   console.log('req body challenge is:', req.body.challenge);
   const action = event.actions[0]!;
   const say = async (payload: SayArguments | string) =>
-    postToChannel({ channel: event.user.username, payload });
+    respond({ responseUrl: event.response_url, payload });
 
   ack(res);
   const [correctAnswer, answer] = action.selected_option.value.split(';');
