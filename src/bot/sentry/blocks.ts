@@ -1,9 +1,11 @@
 import { SentryEvent } from './types';
 import { Block, KnownBlock, SayArguments } from '@slack/bolt';
+import { ChatPostMessageArguments } from '@slack/web-api';
 
-export const slackBlocks = (msg: SentryEvent): SayArguments => {
+export const slackBlocks = (
+  msg: SentryEvent,
+): Pick<ChatPostMessageArguments, 'blocks'> => {
   return {
-    metadata: undefined,
     blocks: [
       {
         type: 'section',

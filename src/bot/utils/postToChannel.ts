@@ -1,6 +1,7 @@
 import { MessageAttachment, SayArguments } from '@slack/bolt';
 import { channelNameToId } from './channels';
 import { token } from '../constants';
+import { ChatPostMessageArguments } from '@slack/web-api';
 
 export async function respond({
   responseUrl,
@@ -35,8 +36,13 @@ export async function postToChannel({
   channel,
   payload,
 }: {
-  channel: string; // e.g. @username or #channelname
-  payload: SayArguments | string;
+  channel: ChatPostMessageArguments['channel']; // e.g. @username or #channelname
+  payload:
+    | Pick<
+        ChatPostMessageArguments,
+        'blocks' | 'attachments' | 'text' | 'mrkdwn'
+      >
+    | string;
 }) {
   const channelId = await channelNameToId(channel);
   if (!channelId) {

@@ -23,7 +23,6 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   await postToChannel({
     channel: msg.channel || defaultChannel,
     payload: {
-      metadata: undefined,
       text: msg.title,
       attachments: [
         {
