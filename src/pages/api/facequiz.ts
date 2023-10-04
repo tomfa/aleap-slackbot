@@ -37,6 +37,7 @@ export default async function facequiz(
     });
     await say(quiz);
   } catch (error) {
+    console.error('Error in facequiz:', error);
     if (error instanceof MessageError) {
       await say((error as MessageError).message);
     } else {

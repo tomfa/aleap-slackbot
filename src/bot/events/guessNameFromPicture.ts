@@ -49,6 +49,7 @@ export async function guessNameFromPicture(
     }
     await say(quiz);
   } catch (error) {
+    console.log('Error in guessNameFromPicture:', error);
     if (error instanceof MessageError) {
       await wait(1000); // Rate limitng
       await say((error as MessageError).message);
