@@ -3,11 +3,11 @@ import { isValidSlackRequest } from '@slack/bolt';
 
 export function validateSlackRequest(
   req: NextApiRequest,
-  verificactionToken: string,
+  verificationToken: string,
   signingSecret?: string,
 ) {
   const payload = getPayload(req);
-  if (payload.token === verificactionToken) {
+  if (payload.token === verificationToken) {
     return { payload, valid: true };
   }
 
@@ -35,6 +35,16 @@ export function validateSlackRequest(
 const getPayload = (
   req: NextApiRequest,
 ): Record<string, any> & { token: string } => {
+  if (req.body === null) {
+    throw new Error('request body is null');
+  }
+  if (typeof req.body === 'object' && !req.body.payload) {
+    const payload = req.body;
+    if (typeof payload.token !== 'string') {
+      throw new Error('request body is missing a "token" field');
+    }
+    return payload;
+  }
   const payload = req.body.payload;
   if (typeof payload !== 'string') {
     throw new Error('request body "payload" is not a string');

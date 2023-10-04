@@ -5,28 +5,23 @@ import { ack } from '../../bot/utils/ack';
 import { getUsers } from '../../bot/api/users';
 import { chat } from '../../bot/api/chat';
 import { ChatPostMessageArguments } from '@slack/web-api';
-
-type FaceQuizPayload = {
-  token: string;
-  team_id: string;
-  team_domain: string;
-  channel_id: string;
-  channel_name: string;
-  user_id: string;
-  user_name: string;
-  command: string;
-  text: string;
-  api_app_id: string;
-  is_enterprise_install: string;
-  response_url: string;
-  trigger_id: string;
-};
+import { validateSlackRequest } from '../../bot/utils/validate';
+import { signingSecret, verificationToken } from '../../bot/constants';
+import { SlashCommand } from '@slack/bolt/dist/types/command';
 
 export default async function facequiz(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const data = (await req.body) as FaceQuizPayload;
+  const { payload: data, valid } = validateSlackRequest(
+    req,
+    verificationToken,
+    signingSecret,
+  ) as { payload: SlashCommand; valid: boolean };
+  if (!valid) {
+    console.error('Invalid request signature found');
+    return;
+  }
   const user = { id: data.user_id, username: data.user_name };
 
   const say = async (
