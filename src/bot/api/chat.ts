@@ -1,6 +1,7 @@
 import { channelNameToId } from './channels';
 import { ChatPostMessageArguments } from '@slack/web-api';
 import { SlackClient } from './client';
+import { token } from '../constants';
 
 // Updates on a specific message. Calling twice will override the first response.
 export async function respond({
@@ -10,21 +11,22 @@ export async function respond({
   responseUrl: string;
   payload: Omit<ChatPostMessageArguments, 'channel'> | string;
 }) {
-  const message: ChatPostMessageArguments =
+  const message: Omit<ChatPostMessageArguments, 'channel'> =
     typeof payload === 'string'
       ? {
           text: payload,
-          channel: responseUrl,
         }
       : {
           text: '',
-          channel: responseUrl,
           ...payload,
         };
-  const client = new SlackClient();
-  const data = await client.chat.postMessage({
-    text: message.text,
-    channel: responseUrl,
+  const data = await fetch(responseUrl, {
+    method: 'POST',
+    body: JSON.stringify(message),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   console.log('data from respond:', data);

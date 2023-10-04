@@ -3,7 +3,7 @@ import { getFaceQuiz } from '../../bot/quiz';
 import { MessageError } from '../../bot/errors';
 import { ack } from '../../bot/utils/ack';
 import { getUsers } from '../../bot/api/users';
-import { chat } from '../../bot/api/chat';
+import { respond } from '../../bot/api/chat';
 import { ChatPostMessageArguments } from '@slack/web-api';
 import { validateSlackRequest } from '../../bot/utils/validate';
 import { signingSecret, verificationToken } from '../../bot/constants';
@@ -26,7 +26,7 @@ export default async function facequiz(
 
   const say = async (
     payload: Omit<ChatPostMessageArguments, 'channel'> | string,
-  ) => chat({ channel: data.channel_id, payload });
+  ) => respond({ responseUrl: data.response_url, payload });
 
   try {
     ack(res);
