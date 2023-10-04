@@ -1,27 +1,56 @@
-import crypto from 'crypto';
 import { NextApiRequest } from 'next';
+import { isValidSlackRequest } from '@slack/bolt';
 
 export function validateSlackRequest(
   req: NextApiRequest,
-  signingSecret: string,
+  verificactionToken: string,
+  signingSecret?: string,
 ) {
-  const requestBody = JSON.stringify(req['body']);
-
-  const headers = req.headers;
-
-  const timestamp = headers['x-slack-request-timestamp'];
-  const slackSignature = headers['x-slack-signature'];
-  const baseString = 'v0:' + timestamp + ':' + requestBody;
-
-  const hmac = crypto
-    .createHmac('sha256', signingSecret)
-    .update(baseString)
-    .digest('hex');
-  const computedSlackSignature = 'v0=' + hmac;
-  const isValid = computedSlackSignature === slackSignature;
-  if (!isValid) {
-    console.log(`Received invalid slack signature ${slackSignature}`);
+  const payload = getPayload(req);
+  if (payload.token === verificactionToken) {
+    return { payload, valid: true };
   }
 
-  return isValid;
+  if (!signingSecret) {
+    return { payload, valid: false };
+  }
+
+  // Note: the below validation will likely never work
+  // The method isValidSlackRequest requires the raw body, but NextJS
+  // parses the body before it reaches this point.
+  const valid = isValidSlackRequest({
+    signingSecret,
+    body: req.body,
+    headers: {
+      'x-slack-signature': req.headers['x-slack-signature'] as string,
+      'x-slack-request-timestamp': parseInt(
+        req.headers['x-slack-request-timestamp'] as string,
+        10,
+      ),
+    },
+  });
+  return { payload, valid };
 }
+
+const getPayload = (
+  req: NextApiRequest,
+): Record<string, any> & { token: string } => {
+  const payload = req.body.payload;
+  if (typeof payload !== 'string') {
+    throw new Error('request body "payload" is not a string');
+  }
+  try {
+    const parsed = JSON.parse(payload);
+    const isRecord = parsed !== null && typeof parsed === 'object';
+    if (!isRecord) {
+      throw new Error('request body "payload" is not a JSON object');
+    }
+    if (typeof parsed.token !== 'string') {
+      throw new Error('request body "payload" is missing a "token" field');
+    }
+    return parsed;
+  } catch (e) {
+    console.error('Failed to parse payload:', payload);
+    throw e;
+  }
+};

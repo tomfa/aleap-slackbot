@@ -12,7 +12,7 @@ A starter for creating your own Slack bot using NextJS API.
 - [Slack: Create an App](http://api.slack.com/apps)
 - [Slack: Block Kit builder](https://app.slack.com/block-kit-builder/)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23Environment&env=SLACK_BOT_TOKEN,SLACK_SIGNING_SECRET,WEBHOOK_TOKEN,SLACK_WEBHOOK_CHANNEL&envDescription=Keys%20needed%20for%20authenticating%20requests%2C%20and%20connecting%20with%20Slack&envLink=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23environment&project-name=slackbot&repository-name=slackbot&skippable-integrations=1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23Environment&env=SLACK_BOT_TOKEN,SLACK_VERIFICATION_TOKEN,WEBHOOK_TOKEN,SLACK_WEBHOOK_CHANNEL&envDescription=Keys%20needed%20for%20authenticating%20requests%2C%20and%20connecting%20with%20Slack&envLink=https%3A%2F%2Fgithub.com%2Ftomfa%2Fvercel-slackbot%23environment&project-name=slackbot&repository-name=slackbot&skippable-integrations=1)
 
 ## Adding to Slack
 
@@ -21,7 +21,9 @@ Follow these steps to set up this bot on your Slack
 1. Deploy this repository to a server.
    Note down the public URL, e.g. `example.vercel.app`
 
+
 2. Go to [api.slack.com/apps](https://api.slack.com/apps?new_app=1), and create a new App.
+
 
 3. This app comes with a command `/facequiz`, that will quiz you on DM about names and faces
    of the users in your Slack. To enabled this, we need to.
@@ -51,7 +53,7 @@ Follow these steps to set up this bot on your Slack
    We need Slack auth keys to be added. We do this by setting environment
    variables on the server we set up in step 1:
 
-   - `SLACK_SIGNING_SECRET`: Found in _Basic Information_ -> _Signing Secret_
+   - `SLACK_VERIFICATION_TOKEN`: Found in _Basic Information_ -> _Verification Token_
    - `SLACK_BOT_TOKEN`: Found in _Oauth and Permissions_ -> _Bot User OAuth Access Token_
 
    For our HTTP webhook receiver, we also want to set the following
