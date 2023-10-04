@@ -35,6 +35,8 @@ export async function guessNameFromPicture(
   } else {
     await say(`Nope! :cry: ${text}`);
   }
+  // sleep for 2 seconds to let them read, and reduce rat limits.
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     const slackUsers = await getUsers();
     const quiz = await getFaceQuiz({ slackUsers, exclude: [user.id] });
