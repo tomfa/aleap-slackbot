@@ -58,8 +58,8 @@ export async function chat({
         }
       : {
           channel: channelId,
-          text: '',
           ...payload,
+          text: payload.text || '',
         };
 
   try {

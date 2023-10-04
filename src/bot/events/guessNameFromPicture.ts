@@ -5,6 +5,7 @@ import { chat } from '../api/chat';
 import { getFaceQuiz } from '../quiz';
 import { MessageError } from '../errors';
 import { ChatPostMessageArguments } from '@slack/web-api';
+import { hasRedis } from '../constants';
 
 export type GuessNameFromPictureAction = Omit<
   StaticSelectAction,
@@ -23,6 +24,9 @@ export async function guessNameFromPicture(
 
   const [correctAnswer, answer] = action.selected_option.value.split(';');
   const user = await getUser({ id: correctAnswer });
+  if (!hasRedis) {
+    await wait(1000); // rate limiting
+  }
   if (!user) {
     await say(`Error: Unable to find user with id ${correctAnswer}`);
     throw new Error(`Error: Unable to find user with id ${correctAnswer}`);
@@ -35,14 +39,18 @@ export async function guessNameFromPicture(
   } else {
     await say(`Nope! :cry: ${text}`);
   }
-  // sleep for 2 seconds to let them read, and reduce rat limits.
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // sleep for 2 seconds to let them read + rate limiting.
+  await wait(2000);
   try {
     const slackUsers = await getUsers();
     const quiz = await getFaceQuiz({ slackUsers, exclude: [user.id] });
+    if (!hasRedis) {
+      await wait(1000); // rate limiting
+    }
     await say(quiz);
   } catch (error) {
     if (error instanceof MessageError) {
+      await wait(1000); // Rate limitng
       await say((error as MessageError).message);
     } else {
       throw error;
