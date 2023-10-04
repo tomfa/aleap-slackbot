@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { allowedTokens, defaultChannel } from '../../bot/constants';
-import { postToChannel } from '../../bot/utils/postToChannel';
+import { defaultChannel } from '../../bot/constants';
+import { chat } from '../../bot/api/chat';
 import { assertTokenAuth } from '../../bot/utils/assertTokenAuth';
 
 export default async function secretPage(
@@ -8,7 +8,7 @@ export default async function secretPage(
   res: NextApiResponse,
 ) {
   assertTokenAuth(req);
-  await postToChannel({
+  await chat({
     channel: defaultChannel,
     payload: '/secret-page got a get request',
   });

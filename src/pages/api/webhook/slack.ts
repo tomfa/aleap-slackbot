@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { allowedTokens, defaultChannel } from '../../../bot/constants';
-import { postToChannel } from '../../../bot/utils/postToChannel';
+import { chat } from '../../../bot/api/chat';
 import { parseSentryEvent } from '../../../bot/sentry/parser';
 import { slackBlocks } from '../../../bot/sentry/blocks';
 import { assertTokenAuth } from '../../../bot/utils/assertTokenAuth';
@@ -13,7 +13,7 @@ export default async function slackWebhook(
   console.log(JSON.stringify(req.body, undefined, 2));
   assertTokenAuth(req);
   const sentryEvent = parseSentryEvent(req.body);
-  await postToChannel({
+  await chat({
     channel: defaultChannel,
     payload: slackBlocks(sentryEvent),
   });

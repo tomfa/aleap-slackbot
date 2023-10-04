@@ -1,7 +1,8 @@
 import { NoRemainingUsers } from './errors';
 import { findAsync, shuffle } from './utils';
-import { Block, KnownBlock, PlainTextOption, SayArguments } from '@slack/bolt';
+import { Block, KnownBlock, PlainTextOption } from '@slack/bolt';
 import { User } from './types';
+import { ChatPostMessageArguments } from '@slack/web-api';
 
 export const getFaceQuiz = async ({
   slackUsers,
@@ -10,7 +11,9 @@ export const getFaceQuiz = async ({
   slackUsers: Array<User>;
   exclude: string[];
 }): Promise<
-  Omit<SayArguments, 'blocks'> & { blocks: Array<Block | KnownBlock> }
+  Omit<ChatPostMessageArguments, 'blocks' | 'channel'> & {
+    blocks: Array<Block | KnownBlock>;
+  }
 > => {
   const users = shuffle(slackUsers);
   const randomUser = await findAsync(
@@ -24,7 +27,6 @@ export const getFaceQuiz = async ({
   }
   const correctAnswer = randomUser.id;
   return {
-    metadata: undefined,
     blocks: [
       {
         type: 'image',

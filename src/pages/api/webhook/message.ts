@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { defaultChannel } from '../../../bot/constants';
-import { postToChannel } from '../../../bot/utils/postToChannel';
+import { chat } from '../../../bot/api/chat';
 import { assertTokenAuth } from '../../../bot/utils/assertTokenAuth';
 import { parseMessageEvent } from '../../../bot/message/parser';
 import { messageBlocks } from '../../../bot/message/blocks';
@@ -20,7 +20,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       : msg.sentiment === 'SAD'
       ? '#861818'
       : '#2a2aa8';
-  await postToChannel({
+  await chat({
     channel: msg.channel || defaultChannel,
     payload: {
       text: msg.title,

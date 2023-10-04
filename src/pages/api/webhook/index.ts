@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { allowedTokens, defaultChannel } from '../../../bot/constants';
-import { postToChannel } from '../../../bot/utils/postToChannel';
+import { chat } from '../../../bot/api/chat';
 import { assertTokenAuth } from '../../../bot/utils/assertTokenAuth';
 
 export default async function webhook(
@@ -11,7 +11,7 @@ export default async function webhook(
   const dataLength = JSON.stringify(req.body).length;
   console.log(`POST /webhook received:`);
   console.log(JSON.stringify(req.body, undefined, 2));
-  await postToChannel({
+  await chat({
     channel: defaultChannel,
     payload: `/webhook got a POST request with data of length ${dataLength}`,
   });

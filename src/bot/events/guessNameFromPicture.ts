@@ -1,9 +1,10 @@
 import { NextApiRequest } from 'next';
-import { BlockAction, SayArguments, StaticSelectAction } from '@slack/bolt';
-import { getUser, getUsers } from '../utils/users';
-import { postToChannel, respond } from '../utils/postToChannel';
+import { BlockAction, StaticSelectAction } from '@slack/bolt';
+import { getUser, getUsers } from '../api/users';
+import { chat } from '../api/chat';
 import { getFaceQuiz } from '../quiz';
 import { MessageError } from '../errors';
+import { ChatPostMessageArguments } from '@slack/web-api';
 
 export type GuessNameFromPictureAction = Omit<
   StaticSelectAction,
@@ -16,8 +17,9 @@ export async function guessNameFromPicture(
   event: GuessNameFromPictureEvent,
 ) {
   const action = event.actions[0]!;
-  const say = async (payload: SayArguments | string) =>
-    postToChannel({ channel: event.channel!.id, payload });
+  const say = async (
+    payload: Omit<ChatPostMessageArguments, 'channel'> | string,
+  ) => chat({ channel: event.channel!.id, payload });
 
   const [correctAnswer, answer] = action.selected_option.value.split(';');
   const user = await getUser({ id: correctAnswer });

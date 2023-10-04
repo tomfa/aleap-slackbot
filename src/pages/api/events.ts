@@ -9,7 +9,6 @@ import {
 } from '../../bot/events/guessNameFromPicture';
 import { BlockAction, StaticSelectAction } from '@slack/bolt';
 import { ack } from '../../bot/utils/ack';
-import { buffer } from 'micro';
 
 export default async function events(
   req: NextApiRequest,

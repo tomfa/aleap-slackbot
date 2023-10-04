@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { tokenizeString } from '../../bot/utils/tokenizeString';
 import { getFaceQuiz } from '../../bot/quiz';
 import { MessageError } from '../../bot/errors';
 import { ack } from '../../bot/utils/ack';
-import { getUsers } from '../../bot/utils/users';
-import { postToChannel, respond } from '../../bot/utils/postToChannel';
-import { SayArguments } from '@slack/bolt';
+import { getUsers } from '../../bot/api/users';
+import { chat } from '../../bot/api/chat';
+import { ChatPostMessageArguments } from '@slack/web-api';
 
 type FaceQuizPayload = {
   token: string;
@@ -30,8 +29,9 @@ export default async function facequiz(
   const data = (await req.body) as FaceQuizPayload;
   const user = { id: data.user_id, username: data.user_name };
 
-  const say = async (payload: SayArguments | string) =>
-    postToChannel({ channel: data.channel_id, payload });
+  const say = async (
+    payload: Omit<ChatPostMessageArguments, 'channel'> | string,
+  ) => chat({ channel: data.channel_id, payload });
 
   try {
     ack(res);

@@ -1,39 +1,36 @@
-import { MessageAttachment, SayArguments } from '@slack/bolt';
 import { channelNameToId } from './channels';
-import { token } from '../constants';
 import { ChatPostMessageArguments } from '@slack/web-api';
+import { SlackClient } from './client';
 
-// Responds on a specific message. Can only be called once. Calling twice will override the first response.
+// Updates on a specific message. Calling twice will override the first response.
 export async function respond({
   responseUrl,
   payload,
 }: {
   responseUrl: string;
-  payload: SayArguments | string;
+  payload: Omit<ChatPostMessageArguments, 'channel'> | string;
 }) {
-  const message =
+  const message: ChatPostMessageArguments =
     typeof payload === 'string'
       ? {
           text: payload,
+          channel: responseUrl,
         }
       : {
           text: '',
+          channel: responseUrl,
           ...payload,
         };
-  const response = await fetch(responseUrl, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(message),
+  const client = new SlackClient();
+  const data = await client.chat.postMessage({
+    text: message.text,
+    channel: responseUrl,
   });
-  const data = await response.json();
 
   console.log('data from respond:', data);
 }
 
-export async function postToChannel({
+export async function chat({
   channel,
   payload,
 }: {
@@ -47,6 +44,7 @@ export async function postToChannel({
 }) {
   const channelId = await channelNameToId(channel);
   if (!channelId) {
+    console.error(`Unable to find channel with name ${channel}`);
     return;
   }
 
@@ -63,16 +61,8 @@ export async function postToChannel({
         };
 
   try {
-    const url = 'https://slack.com/api/chat.postMessage';
-    const response = await fetch(url, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(message),
-    });
-    const data = await response.json();
+    const client = new SlackClient();
+    const data = await client.chat.postMessage(message);
 
     console.log('data from fetch:', data);
   } catch (err) {

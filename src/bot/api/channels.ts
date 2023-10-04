@@ -1,27 +1,12 @@
-import { defaultChannel, token } from '../constants';
-import { ChannelCreatedEvent } from '@slack/bolt/dist/types/events/base-events';
+import { defaultChannel } from '../constants';
 import { getUsers } from './users';
-
-type ConversationsListResponse = {
-  ok: boolean;
-  channels: Array<ChannelCreatedEvent['channel']>;
-  response_metadata: {
-    next_cursor?: 'dGVhbTpDMDYxRkE1UEI=';
-  };
-};
+import { SlackClient } from './client';
 
 export async function getChannels() {
   try {
-    const url = 'https://slack.com/api/conversations.list';
-    const response = await fetch(url, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data: ConversationsListResponse = await response.json();
-    return data.channels;
+    const client = new SlackClient();
+    const data = await client.conversations.list();
+    return data.channels || [];
   } catch (err) {
     console.log('fetch Error:', err);
     return [];
