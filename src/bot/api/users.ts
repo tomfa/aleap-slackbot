@@ -1,6 +1,7 @@
 import { User } from '../types';
 import { SlackClient } from './client';
 import { kv } from '@vercel/kv';
+import { hasRedis } from '../constants';
 
 const CACHE_KEY = 'users';
 
@@ -13,7 +14,7 @@ async function setCacheData(users: User[]) {
 }
 
 export async function getUsers({
-  useCache = true,
+  useCache = hasRedis,
 }: { useCache?: boolean } = {}): Promise<User[]> {
   const cached = useCache && (await getCachedData());
   if (cached) {
@@ -41,7 +42,9 @@ export async function getUsers({
             hasImage: hasImageLazy(m as User),
           }),
         ) || [];
-    await setCacheData(userData);
+    if (useCache) {
+      await setCacheData(userData);
+    }
     return userData;
   } catch (err) {
     console.log('fetch Error:', err);

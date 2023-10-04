@@ -18,3 +18,13 @@ if (!token) {
 if (!verificationToken) {
   throw new Error('Missing SLACK_VERIFICATION_TOKEN');
 }
+
+export const hasRedis =
+  !!process.env.KV_REST_API_TOKEN && !!process.env.KV_REST_API_URL;
+
+if (!hasRedis) {
+  console.warn(
+    'Missing KV_REST_API_TOKEN or KV_REST_API_URL.' +
+      'Will not cache responses from Slack. This may result in rate limiting.',
+  );
+}
