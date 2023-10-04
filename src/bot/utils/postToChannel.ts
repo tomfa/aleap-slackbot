@@ -3,6 +3,7 @@ import { channelNameToId } from './channels';
 import { token } from '../constants';
 import { ChatPostMessageArguments } from '@slack/web-api';
 
+// Responds on a specific message. Can only be called once. Calling twice will override the first response.
 export async function respond({
   responseUrl,
   payload,

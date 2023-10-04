@@ -1,27 +1,24 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import { BlockAction, SayArguments, StaticSelectAction } from '@slack/bolt';
-import { ack } from '../utils/ack';
 import { getUser, getUsers } from '../utils/users';
 import { postToChannel, respond } from '../utils/postToChannel';
 import { getFaceQuiz } from '../quiz';
 import { MessageError } from '../errors';
 
-export interface GuessNameFromPictureEvent
-  extends Omit<BlockAction<StaticSelectAction>, 'type'> {
-  type: 'guess_name_from_picture';
-}
+export type GuessNameFromPictureAction = Omit<
+  StaticSelectAction,
+  'action_id'
+> & { action_id: 'guess_name_from_picture ' };
+export type GuessNameFromPictureEvent = BlockAction<GuessNameFromPictureAction>;
 
 export async function guessNameFromPicture(
   req: NextApiRequest,
-  res: NextApiResponse,
   event: GuessNameFromPictureEvent,
 ) {
-  console.log('req body challenge is:', req.body.challenge);
   const action = event.actions[0]!;
   const say = async (payload: SayArguments | string) =>
-    respond({ responseUrl: event.response_url, payload });
+    postToChannel({ channel: event.channel!.id, payload });
 
-  ack(res);
   const [correctAnswer, answer] = action.selected_option.value.split(';');
   const user = await getUser({ id: correctAnswer });
   if (!user) {
