@@ -6,6 +6,7 @@ import { getFaceQuiz } from '../quiz';
 import { MessageError } from '../errors';
 import { ChatPostMessageArguments } from '@slack/web-api';
 import { hasRedis } from '../constants';
+import { wait } from '../api/utils';
 
 export type GuessNameFromPictureAction = Omit<
   StaticSelectAction,
