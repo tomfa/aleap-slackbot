@@ -13,6 +13,11 @@ export default async function facequiz(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  await handleFaceQuiz(req, res);
+  ack(res);
+}
+
+const handleFaceQuiz = async (req: NextApiRequest, res: NextApiResponse) => {
   const { payload: data, valid } = validateSlackRequest(
     req,
     verificationToken,
@@ -29,7 +34,6 @@ export default async function facequiz(
   ) => respond({ responseUrl: data.response_url, payload });
 
   try {
-    ack(res);
     const slackUsers = await getUsers();
     const quiz = await getFaceQuiz({
       exclude: [user.id],
@@ -44,4 +48,4 @@ export default async function facequiz(
       throw error;
     }
   }
-}
+};

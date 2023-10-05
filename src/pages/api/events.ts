@@ -10,11 +10,7 @@ import {
 import { BlockAction, StaticSelectAction } from '@slack/bolt';
 import { ack } from '../../bot/utils/ack';
 
-export default async function events(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  ack(res);
+const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   const { payload, valid } = validateSlackRequest(
     req,
     verificationToken,
@@ -54,6 +50,13 @@ export default async function events(
     return;
   }
   await guessNameFromPicture(req, payload);
+};
+export default async function events(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  await handleEvent(req, res);
+  ack(res);
 }
 
 const isEvent = (event: Record<string, any>): event is Event => {
