@@ -63,6 +63,10 @@ Follow these steps to set up this bot on your Slack
    - `SLACK_WEBHOOK_CHANNEL`: The channel (or user) to receive data from webhooks,
      e.g. `#random` or `@myhandle`.
 
+   It's recommended (but optional) to add caching for `users` api requests. Or else you'll quickly hit rate limiting. This
+   is done automatically if you add Vercel KV, which set  `KV_REST_API_TOKEN` and
+   `KV_REST_API_URL` env vars. 
+
 ## Develop
 
 Follow these instruction when you wish to develop the bot
