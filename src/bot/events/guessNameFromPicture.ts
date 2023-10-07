@@ -40,8 +40,6 @@ export async function guessNameFromPicture(
   } else {
     await say(`Nope! :cry: ${text}`);
   }
-  // sleep for 2 seconds to let them read + rate limiting.
-  await wait(2000);
   try {
     const slackUsers = await getUsers();
     const quiz = await getFaceQuiz({ slackUsers, exclude: [user.id] });
@@ -52,7 +50,6 @@ export async function guessNameFromPicture(
   } catch (error) {
     console.log('Error in guessNameFromPicture:', error);
     if (error instanceof MessageError) {
-      await wait(1000); // Rate limitng
       await say((error as MessageError).message);
     } else {
       throw error;
