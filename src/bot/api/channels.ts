@@ -1,11 +1,36 @@
-import { defaultChannel } from '../constants';
+import { defaultChannel, hasRedis } from '../constants';
 import { getUsers } from './users';
 import { SlackClient } from './client';
+import { kv } from '@vercel/kv';
+import { User } from '../types';
+import { ChannelsListResponse } from '@slack/web-api';
+import { Channel } from '@slack/web-api/dist/response/ChannelsListResponse';
 
-export async function getChannels() {
+const CACHE_KEY = 'channels';
+
+async function getCachedData() {
+  return kv.get<Channel[]>(CACHE_KEY);
+}
+
+async function setCacheData(channels: Channel[]) {
+  await kv.set<Channel[]>(CACHE_KEY, channels, { ex: 3600 * 12 });
+}
+
+export async function getChannels({
+  useCache = hasRedis,
+}: { useCache?: boolean } = {}): Promise<Channel[]> {
   try {
+    if (useCache) {
+      const cached = await getCachedData();
+      if (cached) {
+        return cached;
+      }
+    }
     const client = new SlackClient();
-    const data = await client.conversations.list();
+    const data = (await client.channels.list()) as ChannelsListResponse;
+    if (data.channels && useCache) {
+      await setCacheData(data.channels);
+    }
     return data.channels || [];
   } catch (err) {
     console.log('fetch Error:', err);
