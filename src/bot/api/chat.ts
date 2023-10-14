@@ -29,7 +29,9 @@ export async function respond({
     },
   });
 
-  console.log('data from respond:', data);
+  if (process.env.DEBUG) {
+    console.log('response from respond callback:', data);
+  }
 }
 
 export async function chat({
@@ -66,8 +68,10 @@ export async function chat({
     const client = new SlackClient();
     const data = await client.chat.postMessage(message);
 
-    console.log('data from fetch:', data);
+    if (process.env.DEBUG) {
+      console.log('response from client.chat.postMessage:', data);
+    }
   } catch (err) {
-    console.log('fetch Error:', err);
+    console.log('error from client.chat.postMessage:', err);
   }
 }

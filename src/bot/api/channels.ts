@@ -27,7 +27,7 @@ export async function getChannels({
       }
     }
     const client = new SlackClient();
-    const data = (await client.channels.list()) as ChannelsListResponse;
+    const data = await client.conversations.list();
     if (data.channels && useCache) {
       await setCacheData(data.channels);
     }

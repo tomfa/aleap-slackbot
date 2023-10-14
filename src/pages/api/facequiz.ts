@@ -1,23 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getFaceQuiz } from '../../bot/quiz';
-import { MessageError } from '../../bot/errors';
-import { ack } from '../../bot/utils/ack';
-import { getUsers } from '../../bot/api/users';
-import { respond } from '../../bot/api/chat';
-import { ChatPostMessageArguments } from '@slack/web-api';
 import { validateSlackRequest } from '../../bot/utils/validate';
 import { signingSecret, verificationToken } from '../../bot/constants';
 import { SlashCommand } from '@slack/bolt/dist/types/command';
+import { ack } from '../../bot/utils/ack';
+import { inngest } from './inngest';
 
-export default async function facequiz(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await handleFaceQuiz(req, res);
-  ack(res);
-}
-
-const handleFaceQuiz = async (req: NextApiRequest, res: NextApiResponse) => {
   const { payload: data, valid } = validateSlackRequest(
     req,
     verificationToken,
@@ -27,25 +18,12 @@ const handleFaceQuiz = async (req: NextApiRequest, res: NextApiResponse) => {
     console.error('Invalid request signature found');
     return;
   }
-  const user = { id: data.user_id, username: data.user_name };
-
-  const say = async (
-    payload: Omit<ChatPostMessageArguments, 'channel'> | string,
-  ) => respond({ responseUrl: data.response_url, payload });
-
-  try {
-    const slackUsers = await getUsers();
-    const quiz = await getFaceQuiz({
-      exclude: [user.id],
-      slackUsers,
-    });
-    await say(quiz);
-  } catch (error) {
-    console.error('Error in facequiz:', error);
-    if (error instanceof MessageError) {
-      await say((error as MessageError).message);
-    } else {
-      throw error;
-    }
-  }
-};
+  await inngest.send({
+    name: 'faceQuiz',
+    data: {
+      userId: data.user_id,
+      responseUrl: data.response_url,
+    },
+  });
+  ack(res);
+}

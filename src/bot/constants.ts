@@ -1,5 +1,3 @@
-import { Redis } from '@upstash/redis';
-
 export const token = process.env.SLACK_BOT_TOKEN as string;
 export const signingSecret = process.env.SLACK_SIGNING_SECRET;
 export const verificationToken: string = process.env
@@ -18,6 +16,15 @@ if (!token) {
 if (!verificationToken) {
   throw new Error('Missing SLACK_VERIFICATION_TOKEN');
 }
+
+export const colors = {
+  HAPPY: '#167716',
+  SAD: '#861818',
+  NEUTRAL: '#2a2aa8',
+  GREEN: '#167716',
+  RED: '#861818',
+  BLUE: '#2a2aa8',
+} as const;
 
 export const hasRedis =
   !!process.env.KV_REST_API_TOKEN && !!process.env.KV_REST_API_URL;

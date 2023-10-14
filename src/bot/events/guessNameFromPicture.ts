@@ -13,17 +13,20 @@ export type GuessNameFromPictureAction = Omit<
   'action_id'
 > & { action_id: 'guess_name_from_picture ' };
 export type GuessNameFromPictureEvent = BlockAction<GuessNameFromPictureAction>;
+type GuessNameFromPictureArgs = {
+  selectedOption: string;
+  channel: string;
+};
 
-export async function guessNameFromPicture(
-  req: NextApiRequest,
-  event: GuessNameFromPictureEvent,
-) {
-  const action = event.actions[0]!;
+export async function guessNameFromPicture({
+  channel,
+  selectedOption,
+}: GuessNameFromPictureArgs) {
   const say = async (
     payload: Omit<ChatPostMessageArguments, 'channel'> | string,
-  ) => chat({ channel: event.channel!.id, payload });
+  ) => chat({ channel, payload });
 
-  const [correctAnswer, answer] = action.selected_option.value.split(';');
+  const [correctAnswer, answer] = selectedOption.split(';');
   const user = await getUser({ id: correctAnswer });
   if (!hasRedis) {
     await wait(1000); // rate limiting

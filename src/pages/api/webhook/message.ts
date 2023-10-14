@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { defaultChannel } from '../../../bot/constants';
+import { colors, defaultChannel } from '../../../bot/constants';
 import { chat } from '../../../bot/api/chat';
 import { assertTokenAuth } from '../../../bot/utils/assertTokenAuth';
 import { parseMessageEvent } from '../../../bot/message/parser';
@@ -14,12 +14,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     res.status(400).send(`Missing title`);
     return;
   }
-  const color =
-    msg.sentiment === 'HAPPY'
-      ? '#167716'
-      : msg.sentiment === 'SAD'
-      ? '#861818'
-      : '#2a2aa8';
+  const color = colors[msg.sentiment || 'NEUTRAL'];
   await chat({
     channel: msg.channel || defaultChannel,
     payload: {

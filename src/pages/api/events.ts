@@ -3,12 +3,10 @@ import { challenge } from '../../bot/events/challenge';
 import { validateSlackRequest } from '../../bot/utils/validate';
 import { signingSecret, verificationToken } from '../../bot/constants';
 import { AppMentionEvent } from '@slack/bolt/dist/types/events/base-events';
-import {
-  guessNameFromPicture,
-  GuessNameFromPictureEvent,
-} from '../../bot/events/guessNameFromPicture';
+import { GuessNameFromPictureEvent } from '../../bot/events/guessNameFromPicture';
 import { BlockAction, StaticSelectAction } from '@slack/bolt';
 import { ack } from '../../bot/utils/ack';
+import { inngest } from './inngest';
 
 const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   const { payload, valid } = validateSlackRequest(
@@ -45,11 +43,20 @@ const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     console.error('Unhandled event type:', payload);
     return;
   }
-  if (!isGuessNameFromPictureEvent(payload)) {
-    console.error('Unhandled event type:', payload);
+  if (isGuessNameFromPictureEvent(payload)) {
+    const action = payload.actions[0]!;
+    const selectedOption = action.selected_option.value;
+    await inngest.send({
+      name: 'guessName',
+      data: {
+        channel: payload.channel?.id || payload.response_url,
+        selectedOption,
+      },
+    });
     return;
   }
-  await guessNameFromPicture(req, payload);
+
+  return;
 };
 export default async function events(
   req: NextApiRequest,
