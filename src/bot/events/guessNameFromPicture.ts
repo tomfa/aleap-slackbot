@@ -32,8 +32,9 @@ export async function guessNameFromPicture({
     await wait(1000); // rate limiting
   }
   if (!user) {
+    console.log(`Error: Unable to find user with id ${correctAnswer}`);
     await say(`Error: Unable to find user with id ${correctAnswer}`);
-    throw new Error(`Error: Unable to find user with id ${correctAnswer}`);
+    return;
   }
   const { real_name, name, profile } = user;
   const title = profile.title ? ` *${profile.title}*` : '';

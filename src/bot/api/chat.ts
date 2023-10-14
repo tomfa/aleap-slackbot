@@ -72,6 +72,9 @@ export async function chat({
       console.log('response from client.chat.postMessage:', data);
     }
   } catch (err) {
-    console.log('error from client.chat.postMessage:', err);
+    console.log(
+      `error from client.chat.postMessage when posting to channel ${channel} (channelId: ${channelId}`,
+      err,
+    );
   }
 }
