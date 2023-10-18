@@ -42,7 +42,7 @@ export async function getUsers({
             hasImage: hasImageLazy(m as User),
           }),
         ) || [];
-    if (useCache) {
+    if (useCache && !!userData.length) {
       await setCacheData(userData);
     }
     return userData;
