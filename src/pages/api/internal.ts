@@ -25,15 +25,17 @@ type FaceQuizEvent = {
 const isFaceQuizEvent = (event: any): event is FaceQuizEvent =>
   event.name === 'faceQuiz';
 
-export const sendEvent = (event: FaceQuizEvent | GuessNameEvent) => {
+export const sendEvent = async (
+  event: FaceQuizEvent | GuessNameEvent,
+  wait: number | 'finish' = 1000,
+) => {
   const isKnownEvent = isGuessNameEvent(event) || isFaceQuizEvent(event);
   if (!isKnownEvent) {
     throw new Error('Unknown event type', event);
   }
-  console.log('using domain url', domainUrl);
   const url = new URL('/api/internal', domainUrl).href;
-  console.log(`POSTing ${event.name} to ${url}`);
-  return fetch(url, {
+  console.log(`POST "${event.name}" to ${url}`);
+  const promiseResult = fetch(url, {
     method: 'POST',
     body: JSON.stringify(event),
     headers: {
@@ -41,6 +43,18 @@ export const sendEvent = (event: FaceQuizEvent | GuessNameEvent) => {
       Authorization: `Bearer ${workerToken}`,
     },
   });
+  if (wait === 'finish') {
+    return promiseResult;
+  } else {
+    // Hack: Vercel will tear down the worker after response is sent.
+    //   We therefore await a bit, to ensure the fetch request is performed.
+    //   We can't really wait until finish for Slack events, since Slack will
+    //   error if we don't respond with an "ack" quickly.
+    //
+    // Sigh
+
+    await new Promise((resolve) => setTimeout(resolve, Math.max(wait, 500)));
+  }
 };
 
 export default async function handler(
