@@ -21,6 +21,19 @@ export const handleFaceQuiz = async (data: HandleFaceQuizArgs) => {
       exclude: [data.userId],
       slackUsers,
     });
+    const askedBy = slackUsers.find((u) => u.id === data.userId);
+    const missingOwnPhoto = askedBy && !(await askedBy.hasImage());
+    if (missingOwnPhoto) {
+      quiz.blocks.push({
+        type: 'context',
+        elements: [
+          {
+            type: 'mrkdwn',
+            text: `I'm not seeing your own profile picture, <@${data.username}>. You should add one!`,
+          },
+        ],
+      });
+    }
     await say(quiz);
   } catch (error) {
     console.error('Error in facequiz:', error);
