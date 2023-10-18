@@ -46,7 +46,8 @@ const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   if (isGuessNameFromPictureEvent(payload)) {
     const action = payload.actions[0]!;
     const selectedOption = action.selected_option.value;
-    await sendEvent({
+    // Intentionally not awaiting this, so that we can ack the request
+    sendEvent({
       name: 'guessName',
       data: {
         channel: payload.channel?.id || payload.response_url,

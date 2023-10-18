@@ -18,7 +18,8 @@ export default async function handler(
     console.error('Invalid request signature found');
     return;
   }
-  await sendEvent({
+  // Intentionally not awaiting this, so that we can ack the request
+  sendEvent({
     name: 'faceQuiz',
     data: {
       userId: data.user_id,
