@@ -3,7 +3,7 @@ import { validateSlackRequest } from '../../bot/utils/validate';
 import { signingSecret, verificationToken } from '../../bot/constants';
 import { SlashCommand } from '@slack/bolt/dist/types/command';
 import { ack } from '../../bot/utils/ack';
-import { inngest } from './inngest';
+import { sendEvent } from './internal';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +18,7 @@ export default async function handler(
     console.error('Invalid request signature found');
     return;
   }
-  await inngest.send({
+  await sendEvent({
     name: 'faceQuiz',
     data: {
       userId: data.user_id,

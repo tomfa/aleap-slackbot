@@ -6,7 +6,7 @@ import { AppMentionEvent } from '@slack/bolt/dist/types/events/base-events';
 import { GuessNameFromPictureEvent } from '../../bot/events/guessNameFromPicture';
 import { BlockAction, StaticSelectAction } from '@slack/bolt';
 import { ack } from '../../bot/utils/ack';
-import { inngest } from './inngest';
+import { sendEvent } from './internal';
 
 const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   const { payload, valid } = validateSlackRequest(
@@ -46,7 +46,7 @@ const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   if (isGuessNameFromPictureEvent(payload)) {
     const action = payload.actions[0]!;
     const selectedOption = action.selected_option.value;
-    await inngest.send({
+    await sendEvent({
       name: 'guessName',
       data: {
         channel: payload.channel?.id || payload.response_url,

@@ -16,6 +16,10 @@ if (!token) {
 if (!verificationToken) {
   throw new Error('Missing SLACK_VERIFICATION_TOKEN');
 }
+export const domainUrl =
+  process.env.DOMAIN_URL || process.env.VERCEL_URL || 'https://localhost:3000';
+
+export const workerToken = process.env.WORKER_TOKEN || verificationToken;
 
 export const colors = {
   HAPPY: '#167716',
