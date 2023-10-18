@@ -30,7 +30,10 @@ export const sendEvent = (event: FaceQuizEvent | GuessNameEvent) => {
   if (!isKnownEvent) {
     throw new Error('Unknown event type', event);
   }
-  return fetch(new URL('/api/internal', domainUrl), {
+  console.log('using domain url', domainUrl);
+  const url = new URL('/api/internal', domainUrl).href;
+  console.log(`POSTing ${event.name} to ${url}`);
+  return fetch(url, {
     method: 'POST',
     body: JSON.stringify(event),
     headers: {
