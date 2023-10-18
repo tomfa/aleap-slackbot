@@ -49,7 +49,7 @@ const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     await sendEvent({
       name: 'guessName',
       data: {
-        channel: `@${payload.user.username}`,
+        username: payload.user.username,
         selectedOption,
       },
     });

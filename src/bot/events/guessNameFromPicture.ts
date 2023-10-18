@@ -16,7 +16,7 @@ export type GuessNameFromPictureAction = Omit<
 export type GuessNameFromPictureEvent = BlockAction<GuessNameFromPictureAction>;
 export type GuessNameFromPictureArgs = {
   selectedOption: string;
-  channel: string;
+  username: string;
 };
 
 const correctVariants = [
@@ -51,12 +51,12 @@ const wrongVariants = [
 ];
 
 export async function guessNameFromPicture({
-  channel,
+  username,
   selectedOption,
 }: GuessNameFromPictureArgs) {
   const say = async (
     payload: Omit<ChatPostMessageArguments, 'channel'> | string,
-  ) => chat({ channel, payload });
+  ) => chat({ channel: '@' + username, payload });
 
   const [correctAnswer, answer] = selectedOption.split(';');
   const user = await getUser({ id: correctAnswer });

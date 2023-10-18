@@ -2,8 +2,6 @@ import { defaultChannel, hasRedis } from '../constants';
 import { getUsers } from './users';
 import { SlackClient } from './client';
 import { kv } from '@vercel/kv';
-import { User } from '../types';
-import { ChannelsListResponse } from '@slack/web-api';
 import { Channel } from '@slack/web-api/dist/response/ChannelsListResponse';
 
 const CACHE_KEY = 'channels';
