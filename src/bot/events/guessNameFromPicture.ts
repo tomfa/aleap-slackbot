@@ -17,6 +17,7 @@ export type GuessNameFromPictureAction = Omit<
 > & { action_id: 'guess_name_from_picture ' };
 export type GuessNameFromPictureEvent = BlockAction<GuessNameFromPictureAction>;
 export type GuessNameFromPictureArgs = {
+  userId: string;
   selectedOption: string;
   username: string;
 };
@@ -46,7 +47,7 @@ const wrongVariants = [
   `:x: Incorrect, I'm afraid.`,
   `:x: You got the next one, I'm sure!`,
   `:x: You will get the next one!`,
-  `:x: Bad luck`,
+  `:x: Bad luck.`,
   `:x: Maybe you misclicked?`,
   `:x: No, but they kinda look similar, right?`,
   `:x: I was sure you would get that one!`,
@@ -77,6 +78,7 @@ const setScore = async (username: string, score: Score) => {
 
 export async function guessNameFromPicture({
   username,
+  userId,
   selectedOption,
 }: GuessNameFromPictureArgs) {
   const say = async (
@@ -133,7 +135,7 @@ export async function guessNameFromPicture({
   try {
     await setScore(username, score);
     const slackUsers = await getUsers();
-    const quiz = await getFaceQuiz({ slackUsers, exclude: [user.id] });
+    const quiz = await getFaceQuiz({ slackUsers, exclude: [user.id, userId] });
     if (!hasRedis) {
       await wait(1000); // rate limiting
     }

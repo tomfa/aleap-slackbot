@@ -49,6 +49,7 @@ const handleEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     await sendEvent({
       name: 'guessName',
       data: {
+        userId: payload.user.id,
         username: payload.user.username,
         selectedOption,
       },
