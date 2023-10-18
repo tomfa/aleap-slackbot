@@ -13,7 +13,7 @@ export type GuessNameFromPictureAction = Omit<
   'action_id'
 > & { action_id: 'guess_name_from_picture ' };
 export type GuessNameFromPictureEvent = BlockAction<GuessNameFromPictureAction>;
-type GuessNameFromPictureArgs = {
+export type GuessNameFromPictureArgs = {
   selectedOption: string;
   channel: string;
 };

@@ -3,11 +3,13 @@ import { ChatPostMessageArguments } from '@slack/web-api';
 import { getUsers } from '../api/users';
 import { getFaceQuiz } from '../quiz';
 import { MessageError } from '../errors';
+import { GuessNameFromPictureArgs } from '../events/guessNameFromPicture';
 
-export const handleFaceQuiz = async (data: {
+export type HandleFaceQuizArgs = {
   userId: string;
   responseUrl: string;
-}) => {
+};
+export const handleFaceQuiz = async (data: HandleFaceQuizArgs) => {
   const say = async (
     payload: Omit<ChatPostMessageArguments, 'channel'> | string,
   ) => respond({ responseUrl: data.responseUrl, payload });

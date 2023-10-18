@@ -1,26 +1,26 @@
-import { handleFaceQuiz } from '../../bot/handlers/facequiz';
-import { guessNameFromPicture } from '../../bot/events/guessNameFromPicture';
+import {
+  handleFaceQuiz,
+  HandleFaceQuizArgs,
+} from '../../bot/handlers/facequiz';
+import {
+  guessNameFromPicture,
+  GuessNameFromPictureArgs,
+} from '../../bot/events/guessNameFromPicture';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { assertTokenAuth } from '../../bot/utils/assertTokenAuth';
 import { domainUrl, workerToken } from '../../bot/constants';
 import { getBodyPayload } from '../../bot/utils/validate';
 
-type GuessNameEvent = {
+export type GuessNameEvent = {
   name: 'guessName';
-  data: {
-    channel: string;
-    selectedOption: string;
-  };
+  data: GuessNameFromPictureArgs;
 };
 const isGuessNameEvent = (event: any): event is GuessNameEvent =>
   event.name === 'guessName';
 
-type FaceQuizEvent = {
+export type FaceQuizEvent = {
   name: 'faceQuiz';
-  data: {
-    userId: string;
-    responseUrl: string;
-  };
+  data: HandleFaceQuizArgs;
 };
 const isFaceQuizEvent = (event: any): event is FaceQuizEvent =>
   event.name === 'faceQuiz';
