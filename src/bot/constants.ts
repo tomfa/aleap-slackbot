@@ -16,8 +16,15 @@ if (!token) {
 if (!verificationToken) {
   throw new Error('Missing SLACK_VERIFICATION_TOKEN');
 }
-export const domainUrl =
-  process.env.DOMAIN_URL || process.env.VERCEL_URL || 'https://localhost:3000';
+const ensureProtocol = (val: string) => {
+  if (val.startsWith('http')) {
+    return val;
+  }
+  return `https://${val}`;
+};
+export const domainUrl = ensureProtocol(
+  process.env.DOMAIN_URL || process.env.VERCEL_URL || 'http://localhost:3000',
+);
 
 export const workerToken = process.env.WORKER_TOKEN || verificationToken;
 
