@@ -8,6 +8,8 @@ import { ChatPostMessageArguments } from '@slack/web-api';
 import { hasRedis } from '../constants';
 import { wait } from '../api/utils';
 import { shuffle } from '../utils';
+import { kv } from '@vercel/kv';
+import { User } from '../types';
 
 export type GuessNameFromPictureAction = Omit<
   StaticSelectAction,
@@ -50,6 +52,29 @@ const wrongVariants = [
   `:x: I was sure you would get that one!`,
 ];
 
+type Score = {
+  correct: number;
+  total: number;
+};
+const getScoreKey = (username: string) => `score:${username}`;
+
+const getScore = async (username: string): Promise<Score> => {
+  const scores = hasRedis ? await kv.get<Score>(getScoreKey(username)) : null;
+  if (scores) {
+    return scores;
+  }
+  return {
+    correct: 0,
+    total: 0,
+  };
+};
+
+const setScore = async (username: string, score: Score) => {
+  if (hasRedis) {
+    await kv.set(getScoreKey(username), score);
+  }
+};
+
 export async function guessNameFromPicture({
   username,
   selectedOption,
@@ -70,13 +95,43 @@ export async function guessNameFromPicture({
   }
   const { real_name, name, profile } = user;
   const title = profile.title ? ` *${profile.title}*` : '';
+  const correct = correctAnswer === answer;
+  const oldScore = await getScore(username);
+  const score = {
+    correct: oldScore.correct + +correct,
+    total: oldScore.total + 1,
+  };
+  const preText = correct
+    ? shuffle(correctVariants)[0]
+    : shuffle(wrongVariants)[0];
   const text = `That was ${real_name} (<@${name}>).${title}`;
-  if (correctAnswer === answer) {
-    await say(`${shuffle(correctVariants)[0]} ${text}`);
-  } else {
-    await say(`${shuffle(wrongVariants)[0]} ${text}`);
-  }
+  await say({
+    attachments: [
+      {
+        color: correct ? '#0d8a28' : '#8b1313',
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: preText + ' ' + text,
+            },
+          },
+          {
+            type: 'context',
+            elements: [
+              {
+                type: 'mrkdwn',
+                text: `${score.correct}/${score.total} correct. Resets after 1 hour of inactivity.`,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
   try {
+    await setScore(username, score);
     const slackUsers = await getUsers();
     const quiz = await getFaceQuiz({ slackUsers, exclude: [user.id] });
     if (!hasRedis) {
