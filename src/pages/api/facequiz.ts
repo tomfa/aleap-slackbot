@@ -19,12 +19,13 @@ export default async function handler(
     return;
   }
 
-  await sendEvent({
+  sendEvent({
     name: 'faceQuiz',
     data: {
       userId: data.user_id,
       responseUrl: data.response_url,
     },
+  }).finally(() => {
+    ack(res);
   });
-  ack(res);
 }

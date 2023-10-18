@@ -62,8 +62,9 @@ export default async function events(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await handleEvent(req, res);
-  ack(res);
+  handleEvent(req, res).finally(() => {
+    ack(res);
+  });
 }
 
 const isEvent = (event: Record<string, any>): event is Event => {
