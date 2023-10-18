@@ -1,4 +1,4 @@
-import { respond } from '../api/chat';
+import { chat, respond } from '../api/chat';
 import { ChatPostMessageArguments } from '@slack/web-api';
 import { getUsers } from '../api/users';
 import { getFaceQuiz } from '../quiz';
@@ -6,13 +6,14 @@ import { MessageError } from '../errors';
 import { GuessNameFromPictureArgs } from '../events/guessNameFromPicture';
 
 export type HandleFaceQuizArgs = {
+  username: string;
   userId: string;
   responseUrl: string;
 };
 export const handleFaceQuiz = async (data: HandleFaceQuizArgs) => {
   const say = async (
     payload: Omit<ChatPostMessageArguments, 'channel'> | string,
-  ) => respond({ responseUrl: data.responseUrl, payload });
+  ) => chat({ channel: '@' + data.username, payload });
 
   try {
     const slackUsers = await getUsers();

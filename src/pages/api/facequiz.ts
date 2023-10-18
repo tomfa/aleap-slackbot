@@ -23,6 +23,7 @@ export default async function handler(
     name: 'faceQuiz',
     data: {
       userId: data.user_id,
+      username: data.user_name,
       responseUrl: data.response_url,
     },
   }).finally(() => {
