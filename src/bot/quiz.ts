@@ -4,6 +4,17 @@ import { Block, KnownBlock, PlainTextOption } from '@slack/bolt';
 import { User } from './types';
 import { ChatPostMessageArguments } from '@slack/web-api';
 
+const questionVariants = [
+  'Who is this?',
+  `What's their name?`,
+  `What's their name again?`,
+  `Remember this one?`,
+  `Sure you know this one?`,
+  `Who's this?`,
+  `This one is easy, right?`,
+  `And this one?`,
+];
+
 export const getFaceQuiz = async ({
   slackUsers,
   exclude = [],
@@ -26,19 +37,20 @@ export const getFaceQuiz = async ({
     );
   }
   const correctAnswer = randomUser.id;
+  const question = shuffle(questionVariants)[0];
   return {
     blocks: [
       {
         type: 'image',
         image_url:
           randomUser.profile.image_original || randomUser.profile.image_192,
-        alt_text: 'Who is this?',
+        alt_text: question,
       },
       {
         type: 'section',
         text: {
           type: 'plain_text',
-          text: 'Who is this?',
+          text: question,
         },
       },
       {
