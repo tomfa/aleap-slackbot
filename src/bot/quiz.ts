@@ -64,7 +64,7 @@ export const getFaceQuiz = async ({
               text: 'Select an item',
               emoji: true,
             },
-            options: users.map(
+            options: slackUsers.map(
               (c): PlainTextOption => ({
                 text: {
                   type: 'plain_text',
