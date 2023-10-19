@@ -22,7 +22,7 @@ export const handleFaceQuiz = async (data: HandleFaceQuizArgs) => {
       slackUsers,
     });
     const askedBy = slackUsers.find((u) => u.id === data.userId);
-    const missingOwnPhoto = askedBy && !(await askedBy.hasImage());
+    const missingOwnPhoto = askedBy && !askedBy.hasImage;
     if (missingOwnPhoto) {
       quiz.blocks.push({
         type: 'context',

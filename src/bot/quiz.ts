@@ -29,7 +29,7 @@ export const getFaceQuiz = async ({
   const users = shuffle(slackUsers);
   const randomUser = await findAsync(
     users.filter((u) => !exclude.includes(u.id)),
-    async (u) => await u.hasImage(),
+    async (u) => u.hasImage,
   );
   if (!randomUser) {
     throw new NoRemainingUsers(

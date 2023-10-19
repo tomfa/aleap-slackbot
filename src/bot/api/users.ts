@@ -23,7 +23,7 @@ export async function getUsers({
         ...m,
         id: m.id!,
         profile: m.profile!,
-        hasImage: hasImageLazy(m as User),
+        hasImage: !!m.profile?.is_custom_image,
       }),
     );
   }
@@ -39,7 +39,7 @@ export async function getUsers({
             ...m,
             id: m.id!,
             profile: m.profile!,
-            hasImage: hasImageLazy(m as User),
+            hasImage: !!m.profile?.is_custom_image,
           }),
         ) || [];
     if (useCache && !!userData.length) {
@@ -51,28 +51,6 @@ export async function getUsers({
     return [];
   }
 }
-
-async function isRedirected(url: string) {
-  const data = await fetch(url, { method: 'HEAD' });
-  return data.redirected;
-}
-
-async function hasImage(user: User) {
-  if (user.profile?.image_original) {
-    return true;
-  }
-  const gravatarUrl = user.profile?.image_192;
-  return !!gravatarUrl && !(await isRedirected(gravatarUrl));
-}
-
-const hasImageLazy = (user: User) => async () => {
-  if (user.hasImage !== undefined) {
-    return user.hasImage();
-  }
-  const value = await hasImage(user);
-  user.hasImage = async () => value;
-  return value;
-};
 
 export async function getUser({ id }: { id: string }) {
   const users = await getUsers();
