@@ -1,9 +1,7 @@
-export function shuffle<T = any>(a: T[]): T[] {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+const randomSort = () => Math.random() - 0.5;
+
+export function shuffle<T = any>(items: T[]): T[] {
+  return items.slice().sort(randomSort);
 }
 
 export async function findAsync<T>(
