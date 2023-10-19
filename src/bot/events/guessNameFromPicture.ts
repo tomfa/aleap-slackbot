@@ -72,7 +72,7 @@ const getScore = async (username: string): Promise<Score> => {
 
 const setScore = async (username: string, score: Score) => {
   if (hasRedis) {
-    await kv.set(getScoreKey(username), score);
+    await kv.set(getScoreKey(username), score, { ex: 3600 });
   }
 };
 
